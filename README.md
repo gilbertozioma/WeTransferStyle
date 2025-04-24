@@ -179,3 +179,57 @@ UPLOAD_MAX_EXPIRY=30
 UPLOAD_STORAGE_DISK=local
 UPLOAD_DIRECTORY=uploads
 ```
+
+## Example Usage
+
+## Upload Files
+# Upload a single file with default expiry (1 day)
+curl -X POST \
+  -F "files[]=@/path/to/your/file.jpg" \
+  http://localhost:8000/api/upload
+
+# Upload multiple files with custom expiry and email notification
+curl -X POST \
+  -F "files[]=@/path/to/your/file1.jpg" \
+  -F "files[]=@/path/to/your/file2.pdf" \
+  -F "expires_in=7" \
+  -F "email_to_notify=gilbertozioma0@gmail.com" \
+  http://localhost:8000/api/upload
+
+# Upload files with password protection
+curl -X POST \
+  -F "files[]=@/path/to/your/file.jpg" \
+  -F "password=1234" \
+  http://localhost:8000/api/upload
+
+## Download Files
+# Download without password
+curl -X GET \
+  -o downloaded_file.jpg \
+  http://localhost:8000/api/download/tQHw2v3nF0H39AEVtLelZgXVVjXeSXdh
+
+# Download with password
+curl -X GET \
+  -G \
+  --data-urlencode "password=1234" \
+  -o downloaded_file.jpg \
+  http://localhost:8000/api/download/tQHw2v3nF0H39AEVtLelZgXVVjXeSXdh
+
+# Download a specific file (when multiple files were uploaded)
+curl -X GET \
+  -G \
+  --data-urlencode "file_id=1" \
+  --data-urlencode "password=1234" \
+  -o downloaded_file.jpg \
+  http://localhost:8000/api/download/tQHw2v3nF0H39AEVtLelZgXVVjXeSXdh
+
+## Get Statistics
+# Get stats without password
+curl -X GET \
+  http://localhost:8000/api/uploads/stats/tQHw2v3nF0H39AEVtLelZgXVVjXeSXdh
+
+# Get stats with password
+curl -X GET \
+  -G \
+  --data-urlencode "password=1234" \
+  http://localhost:8000/api/uploads/stats/tQHw2v3nF0H39AEVtLelZgXVVjXeSXdh
