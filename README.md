@@ -1,66 +1,181 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# WeTransferStyle API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A WeTransfer-style file upload and sharing system built with Laravel. This API allows users to upload files, receive shareable download links, and set expiry settings for the uploaded files.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **File Upload**: Upload up to 5 files (max 100MB each) of specific types (jpg, png, pdf, docx, zip)
+- **Download Links**: Receive shareable download links for uploaded files
+- **Expiry Settings**: Set how long the download links should remain active
+- **Auto-Deletion**: Expired files are automatically deleted by a scheduled command
+- **Email Notifications**: Optional email notifications when files are uploaded
+- **Password Protection**: Optional password protection for downloads
+- **File Statistics**: View statistics about uploaded files (downloads, size, expiry)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requirements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.1 or higher
+- Laravel 10.x
+- MySQL/PostgreSQL
+- Composer
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/gilbertozioma/WeTransferStyle.git
+   cd laravel-file-upload-api
+   ```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. Install dependencies:
+   ```bash
+   composer install
+   ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. Create and configure your environment file:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-## Laravel Sponsors
+4. Configure your database in the `.env` file:
+   ```
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=wetransferstlye
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+5. Run migrations:
+   ```bash
+   php artisan migrate
+   ```
 
-### Premium Partners
+6. Set up email configuration for notifications (Sorry, I can't disclose my credentials):
+   ```
+   MAIL_MAILER=smtp
+   MAIL_HOST=your-smtp-host
+   MAIL_PORT=587
+   MAIL_USERNAME=your-username
+   MAIL_PASSWORD=your-password
+   MAIL_ENCRYPTION=tls
+   MAIL_FROM_ADDRESS=your-email@example.com
+   MAIL_FROM_NAME="${APP_NAME}"
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+7. Set up the task scheduler for file cleanup:
+   Add this Cron entry to your server to run the Laravel scheduler:
+   ```
+   * * * * * cd /project-path && php artisan schedule:run >> /dev/null 2>&1
+   ```
 
-## Contributing
+8. Run the application:
+   ```bash
+   php artisan serve
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## API Endpoints
 
-## Code of Conduct
+### Upload Files
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**POST /api/upload**
 
-## Security Vulnerabilities
+Upload files and receive a download link.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Parameters (multipart/form-data):**
+- `files[]` - Array of files (required)
+- `expires_in` - Number of days until the link expires (optional, default: 1)
+- `email_to_notify` - Email to notify when files are uploaded (optional)
+- `password` - Password to protect downloads (optional)
 
-## License
+**Response:**
+```json
+{
+  "success": true,
+  "download_link": "https://domain.com/api/download/{token}"
+}
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Download Files
+
+**GET /api/download/{token}**
+
+Download uploaded files using the token.
+
+**Parameters (query):**
+- `password` - Password if the download is protected
+- `file_id` - File ID if multiple files were uploaded
+
+**Response:**
+- File download stream, or
+- JSON error if token is invalid, expired, or password is required
+
+### Get File Statistics
+
+**GET /api/uploads/stats/{token}**
+
+Get statistics about uploaded files.
+
+**Parameters (query):**
+- `password` - Password if the download is protected
+
+**Response:**
+```json
+{
+    "success": true,
+    "expires_at": "2025-04-25T02:39:47+00:00",
+    "expires_in": 66412,
+    "has_password": false,
+    "total_files": 2,
+    "total_size": 1064565,
+    "total_downloads": 0,
+    "files": [
+      {
+         "id": 1,
+         "filename": "Screenshot_7-4-2025_122537_127.0.0.2.jpg",
+         "size": 958422,
+         "mime_type": "image/jpeg",
+         "downloads": 0
+      },
+      {
+         "id": 2,
+         "filename": "Screenshot_29-3-2025_201912_pitch.jpeg",
+         "size": 106143,
+         "mime_type": "image/jpeg",
+         "downloads": 0
+      }
+   ]
+}
+```
+
+## Command Line Tools
+
+### Clean Expired Uploads
+
+Run the command to delete expired files and records:
+```bash
+php artisan clean:expired-uploads
+```
+
+This command is scheduled to run daily at midnight automatically.
+
+## Postman Collection
+
+Import the included Postman collection to test the API endpoints:
+
+[Download Postman Collection](./public/postman_collection/wetransferstyle.json)
+
+## Customization
+
+Customizable settings in the `.env` file:
+
+```
+UPLOAD_MAX_FILE_SIZE=100
+UPLOAD_MAX_FILES=5
+UPLOAD_DEFAULT_EXPIRY=1
+UPLOAD_MAX_EXPIRY=30
+UPLOAD_STORAGE_DISK=local
+UPLOAD_DIRECTORY=uploads
+```
