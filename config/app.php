@@ -145,6 +145,37 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Upload Settings
+    |--------------------------------------------------------------------------
+    |
+    | This file contains the configuration for the file upload system.
+    |
+    */
+
+    'max_file_size' => env('UPLOAD_MAX_FILE_SIZE', 100),
+
+    'max_files' => env('UPLOAD_MAX_FILES', 5),
+
+    'default_expiry_days' => env('UPLOAD_DEFAULT_EXPIRY', 1),
+
+    'max_expiry_days' => env('UPLOAD_MAX_EXPIRY', 30),
+
+    'allowed_types' => [
+        'jpg',
+        'jpeg',
+        'png',
+        'pdf',
+        'docx',
+        'zip'
+    ],
+
+    'storage_disk' => env('UPLOAD_STORAGE_DISK', 'local'),
+
+    'upload_directory' => env('UPLOAD_DIRECTORY', 'uploads'),
+    
+
+    /*
+    |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------
     |
