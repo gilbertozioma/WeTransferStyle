@@ -12,7 +12,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Run the clean:expired-uploads command daily at midnight
+        $schedule->command('clean:expired-uploads')
+            ->daily()
+            ->at('00:00')
+            ->withoutOverlapping()
+            ->appendOutputTo(storage_path('logs/cleanup.log'));
     }
 
     /**
@@ -20,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
