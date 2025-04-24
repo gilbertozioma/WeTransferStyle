@@ -180,56 +180,75 @@ UPLOAD_STORAGE_DISK=local
 UPLOAD_DIRECTORY=uploads
 ```
 
-## Example Usage
+#
+
+# Example Usage
 
 ## Upload Files
-# Upload a single file with default expiry (1 day)
+### Upload a single file with default expiry (1 day)
+```bash
 curl -X POST \
-  -F "files[]=@/path/to/your/file.jpg" \
-  http://localhost:8000/api/upload
+   -F "files[]=@/path/to/your/file.jpg" \
+   http://localhost:8000/api/upload
+```
 
-# Upload multiple files with custom expiry and email notification
+### Upload multiple files with custom expiry and email notification
+```bash
 curl -X POST \
-  -F "files[]=@/path/to/your/file1.jpg" \
-  -F "files[]=@/path/to/your/file2.pdf" \
-  -F "expires_in=7" \
-  -F "email_to_notify=gilbertozioma0@gmail.com" \
-  http://localhost:8000/api/upload
+   -F "files[]=@/path/to/your/file1.jpg" \
+   -F "files[]=@/path/to/your/file2.pdf" \
+   -F "expires_in=7" \
+   -F "email_to_notify=gilbertozioma0@gmail.com" \
+   http://localhost:8000/api/upload
+```
 
-# Upload files with password protection
+### Upload files with password protection
+```bash
 curl -X POST \
-  -F "files[]=@/path/to/your/file.jpg" \
-  -F "password=1234" \
-  http://localhost:8000/api/upload
+   -F "files[]=@/path/to/your/file.jpg" \
+   -F "password=1234" \
+   http://localhost:8000/api/upload
+```
 
+#
 ## Download Files
-# Download without password
+### Download without password
+```bash
 curl -X GET \
-  -o downloaded_file.jpg \
-  http://localhost:8000/api/download/tQHw2v3nF0H39AEVtLelZgXVVjXeSXdh
+   -o downloaded_file.jpg \
+   http://localhost:8000/api/download/tQHw2v3nF0H39AEVtLelZgXVVjXeSXdh
+```
 
-# Download with password
+### Download with password
+```bash
 curl -X GET \
-  -G \
-  --data-urlencode "password=1234" \
-  -o downloaded_file.jpg \
-  http://localhost:8000/api/download/tQHw2v3nF0H39AEVtLelZgXVVjXeSXdh
+   -G \
+   --data-urlencode "password=1234" \
+   -o downloaded_file.jpg \
+   http://localhost:8000/api/download/tQHw2v3nF0H39AEVtLelZgXVVjXeSXdh
+```
 
-# Download a specific file (when multiple files were uploaded)
+### Download a specific file (when multiple files were uploaded)
+```bash
 curl -X GET \
-  -G \
-  --data-urlencode "file_id=1" \
-  --data-urlencode "password=1234" \
-  -o downloaded_file.jpg \
-  http://localhost:8000/api/download/tQHw2v3nF0H39AEVtLelZgXVVjXeSXdh
+   -G \
+   --data-urlencode "file_id=1" \
+   --data-urlencode "password=1234" \
+   -o downloaded_file.jpg \
+   http://localhost:8000/api/download/tQHw2v3nF0H39AEVtLelZgXVVjXeSXdh
+```
 
 ## Get Statistics
-# Get stats without password
+### Get stats without password
+```bash
 curl -X GET \
-  http://localhost:8000/api/uploads/stats/tQHw2v3nF0H39AEVtLelZgXVVjXeSXdh
+   http://localhost:8000/api/uploads/stats/tQHw2v3nF0H39AEVtLelZgXVVjXeSXdh
+```
 
-# Get stats with password
+### Get stats with password
+```bash
 curl -X GET \
-  -G \
-  --data-urlencode "password=1234" \
-  http://localhost:8000/api/uploads/stats/tQHw2v3nF0H39AEVtLelZgXVVjXeSXdh
+   -G \
+   --data-urlencode "password=1234" \
+   http://localhost:8000/api/uploads/stats/tQHw2v3nF0H39AEVtLelZgXVVjXeSXdh
+```
