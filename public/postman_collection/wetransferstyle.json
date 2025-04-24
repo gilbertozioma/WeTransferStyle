@@ -1,0 +1,297 @@
+{
+    "info": {
+        "_postman_id": "bd30fbdc-174e-4701-8010-dbbc91811d89",
+        "name": "WeTransferStyle API",
+        "description": "API documentation for WeTransferStyle file sharing application.\n\n## Base Information\n\n- Current UTC DateTime Format: YYYY-MM-DD HH:MM:SS\n    \n- Base URL: {{base_url}}\n    \n\n## Authentication\n\n- No user authentication\n    \n\n## Common Response Headers\n\n- X-Current-UTC-DateTime: Current server time\n    \n- Content-Type: application/json",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "28807849"
+    },
+    "item": [
+        {
+            "name": "Upload",
+            "item": [
+                {
+                    "name": "Upload Files",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "files[]",
+                                    "description": "Files to upload (can be multiple)",
+                                    "type": "file",
+                                    "src": []
+                                },
+                                {
+                                    "key": "expires_in",
+                                    "value": "1",
+                                    "description": "Days until expiration",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "email_to_notify",
+                                    "value": "gilbertoziom0@gmail.com",
+                                    "description": "Notification email",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/upload",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "upload"
+                            ]
+                        },
+                        "description": "# Upload Files\n\nUpload one or multiple files with optional parameters.\n\n## Headers\n\n- Content-Type: multipart/form-data\n    \n- X-Current-UTC-DateTime: 2025-04-24 07:33:30"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Example",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "files[]",
+                                            "type": "file",
+                                            "src": "file/path/to/upload1.jpg"
+                                        },
+                                        {
+                                            "key": "expires_in",
+                                            "value": "1"
+                                        },
+                                        {
+                                            "key": "email_to_notify",
+                                            "value": "gilbertoziom0@gmail.com"
+                                        }
+                                    ]
+                                },
+                                "url": {
+                                    "raw": "http://localhost/api/upload",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "upload"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "X-Current-UTC-DateTime",
+                                    "value": "2025-04-24 07:33:30"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\r\n    \"success\": true,\r\n    \"download_link\": \"http://localhost:8000/api/download/ZMnxVt7CPhd9rXJ1571BMgjCsrWfUzIa\"\r\n}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Download",
+            "item": [
+                {
+                    "name": "Download Files",
+                    "request": {
+                        "auth": {
+                            "type": "bearer"
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/download/tQHw2v3nF0H39AEVtLelZgXVVjXeSXdh",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "download",
+                                "tQHw2v3nF0H39AEVtLelZgXVVjXeSXdh"
+                            ]
+                        },
+                        "description": "# Download Files\nRetrieve files using the provided token.\n\n## Headers\n- X-Current-UTC-DateTime: 2025-04-24 07:33:30"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Example",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost/api/download/KSaEDP1cX110cjBrT53TVQNRxO7fl52H",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "download",
+                                        "KSaEDP1cX110cjBrT53TVQNRxO7fl52H"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/zip"
+                                },
+                                {
+                                    "key": "Content-Disposition",
+                                    "value": "attachment; filename=files_2025_04_24.zip"
+                                },
+                                {
+                                    "key": "X-Current-UTC-DateTime",
+                                    "value": "2025-04-24 07:33:30"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\r\n    \"success\": true,\r\n    \"message\": \"Multiple files found. Please specify which file to download.\",\r\n    \"files\": [\r\n        {\r\n            \"id\": 1,\r\n            \"name\": \"apple.pdf\",\r\n            \"size\": 1024000\r\n        },\r\n        {\r\n            \"id\": 2,\r\n            \"name\": \"mango.jpg\",\r\n            \"size\": 512000\r\n        }\r\n    ]\r\n}"
+                        },
+                        {
+                            "name": "Error Example - Password Required",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost/api/download/KSaEDP1cX110cjBrT53TVQNRxO7fl52H",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "download",
+                                        "KSaEDP1cX110cjBrT53TVQNRxO7fl52H"
+                                    ]
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\r\n    \"success\": false,\r\n    \"message\": \"Invalid password.\",\r\n    \"requires_password\": true\r\n}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Statistics",
+            "item": [
+                {
+                    "name": "Get Upload Stats",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/uploads/stats/KSaEDP1cX110cjBrT53TVQNRxO7fl52H",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "uploads",
+                                "stats",
+                                "KSaEDP1cX110cjBrT53TVQNRxO7fl52H"
+                            ]
+                        },
+                        "description": "# Get Upload Statistics\nRetrieve detailed statistics for an upload.\n\n## Headers\n- X-Current-UTC-DateTime: 2025-04-24 07:33:30"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Example",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://localhost/api/uploads/stats/KSaEDP1cX110cjBrT53TVQNRxO7fl52H",
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "uploads",
+                                        "stats",
+                                        "KSaEDP1cX110cjBrT53TVQNRxO7fl52H"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "X-Current-UTC-DateTime",
+                                    "value": "2025-04-24 07:33:30"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\r\n    \"success\": true,\r\n    \"expires_at\": \"2025-04-25T02:39:47+00:00\",\r\n    \"expires_in\": 66412,\r\n    \"has_password\": false,\r\n    \"total_files\": 2,\r\n    \"total_size\": 1064565,\r\n    \"total_downloads\": 0,\r\n    \"files\": [\r\n        {\r\n            \"id\": 1,\r\n            \"filename\": \"Screenshot_7-4-2025_122537_127.0.0.2.jpg\",\r\n            \"size\": 958422,\r\n            \"mime_type\": \"image/jpeg\",\r\n            \"downloads\": 0\r\n        },\r\n        {\r\n            \"id\": 2,\r\n            \"filename\": \"Screenshot_29-3-2025_201912_pitch.jpeg\",\r\n            \"size\": 106143,\r\n            \"mime_type\": \"image/jpeg\",\r\n            \"downloads\": 0\r\n        }\r\n    ]\r\n}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    "const now = new Date();",
+                    "const utcDate = now.toISOString().replace('T', ' ').split('.')[0];",
+                    "pm.request.headers.add({",
+                    "    key: 'X-Current-UTC-DateTime',",
+                    "    value: utcDate",
+                    "});"
+                ]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost",
+            "type": "string"
+        },
+        {
+            "key": "auth_token",
+            "value": "",
+            "type": "string"
+        }
+    ]
+}
